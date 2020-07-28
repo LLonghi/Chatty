@@ -1,0 +1,4 @@
+.chatlist-area {
+    grid-area: chatlist;
+    background-color: var(--chatlist-background-color);
+}

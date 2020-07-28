@@ -1,0 +1,8 @@
+.header-area {
+    grid-area: header;
+    background-color: var(--header-background-color);    
+    font-family: 'Yellowtail';
+    font-size: 46px;
+    text-align: center;
+    color:var(--chatty-color)
+}

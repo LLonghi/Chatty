@@ -1,24 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import fontAwesome from "./resources/fontawesome-free-5.14.0-web/css/all.css";
+
+import Chat from "./components/chat/Index";
+import Chatlist from "./components/chatlist/Index";
+import Header from "./components/header/Index";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header></Header>
+      <Chatlist></Chatlist>
+      <Chat></Chat>
     </div>
   );
 }
