@@ -1,0 +1,9 @@
+{
+    "name": "Chatty",
+    "version": "0.0.1",
+    "description": "It's an open source web chat!",
+    "dependencies": {
+        "express": "^4.15.2",
+        "socket.io": "^2.3.0"
+    }
+}
