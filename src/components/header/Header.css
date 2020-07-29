@@ -4,5 +4,7 @@
     font-family: 'Yellowtail';
     font-size: 46px;
     text-align: center;
-    color:var(--chatty-color)
+    color:var(--chatty-color);
+    box-shadow: 0px 6px 8px 1px #00000033;
+    z-index: 1;
 }

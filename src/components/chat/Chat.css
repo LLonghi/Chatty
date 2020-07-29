@@ -1,49 +1,21 @@
-.chat-area {
-  grid-area: chat;
-  background-color: var(--chat-background-color);
-  height: 100vh;
-  display: grid;
-  grid-template:
-    "chat-header"
-    "chat-messages"
-    "chat-send-area";
-  grid-template-columns: auto;
-  grid-template-rows: 70px auto 60px;
+.chat {
+  padding: 15px 20px;
+  border-bottom: solid 1px #bababa;
+  cursor: pointer;
+  background-color: var(--chatlist-background-color);
 }
 
-.chat-header {
-  grid-area: chat-header;
+.chat:hover {
+  filter: brightness(0.95);
 }
 
-.chat-messages {
-  grid-area: chat-messages;
+.chat:active {
+  filter: brightness(0.90);
 }
 
-
-.chat-send-area {
-  grid-area: chat-send-area;
-  padding-top: 8px;
-  border-top: 1px solid #676767;
-  margin: 10px 20px;
-  display: grid;
-  grid-template: "text button";
-  grid-template-columns: auto 90px;
+.chat-title {
+  font-weight: bold;
 }
 
-.chat-text-area {
-    cursor: text;
-    background-color: #bababa;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-.chat-send-button {
-    margin-left: 5px;
-    display: flex;
-    background-color: var(--chatlist-background-color);
-    color: white;
-    border-radius: 5px;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
+.chat-last-message {
 }

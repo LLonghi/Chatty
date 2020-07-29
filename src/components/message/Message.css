@@ -1,0 +1,17 @@
+.message {
+  background-color: silver;
+  width: fit-content;
+  padding: 8px;
+  border-radius: 5px;
+  height: fit-content;
+}
+
+.message-user {
+    color: #ce89ba;
+    background-color: #3a3a3a;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 2px 5px;
+    font-size: 12px;
+    margin-top: 10px;
+}
