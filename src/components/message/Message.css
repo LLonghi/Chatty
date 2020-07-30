@@ -1,17 +1,61 @@
 .message {
-  background-color: silver;
-  width: fit-content;
-  padding: 8px;
-  border-radius: 5px;
+  /* width: fit-content; */
   height: fit-content;
+  position: relative;
+}
+
+.message-time-show.message-time {
+  display: inline;
+}
+
+.message-time {
+  /* position: absolute;
+  right: -32px;
+  bottom: -2px; */
+  display: none;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  margin-left: 5px;
+}
+
+.message:hover .message-time {
+  display: inline;
+}
+
+.message-text {
+  background-color: silver;
+  border-radius: 5px;
+  padding: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.message-user-show.message-user {
+  display: inline;
 }
 
 .message-user {
-    color: #ce89ba;
-    background-color: #3a3a3a;
-    border-radius: 5px;
-    width: fit-content;
-    padding: 2px 5px;
-    font-size: 12px;
-    margin-top: 10px;
+  display: none;
+  color: #ce89ba;
+  background-color: #3a3a3a;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 2px 5px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.message-sent.message-user {
+  float: right;
+}
+
+.message-sent .message-text {
+  float: right;
+}
+.message-sent .message-time {
+  float: right;
+  margin-left: unset;
+  margin-right: 5px;
+  position: initial;
 }
