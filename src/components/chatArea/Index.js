@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import "./ChatArea.css";
+import { socket } from "../../service/socket";
 
 import Message from "../message/Index";
 
@@ -49,15 +50,28 @@ export default class ChatArea extends Component {
         showTime: true,
       },
     ];
+
+    
+    this.addReceivedMessage = this.addReceivedMessage.bind(this);
+  }
+
+  componentDidMount() {
+    socket.on("UserConnected", (response) => {
+      console.log("Msg from server: " + response);
+    });
+
+    socket.on("MessageReceived", this.addReceivedMessage);
+  }
+
+  componentWillUnmount() {
+    socket.off("get_data", this.getData);
   }
 
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
-  
-  sayIt() {
-    if (!this.state.value) return;
 
+  sayIt(message) {
     var maxId = Math.max.apply(
         Math,
         this.messages.map((message) => message.id)
@@ -66,15 +80,39 @@ export default class ChatArea extends Component {
 
     this.messages.push({
       id: maxId + 1,
-      content: this.state.value,
-      user: "You",
-      showUser: false,
+      content: message.text,
+      user: message.user,
+      showUser: message.showUser,
       time: `${date.getHours()}:${date.getMinutes()}`,
-      showTime: false,
-      own: true,
+      showTime: true,
+      own: message.own,
     });
 
     this.setState(this.messages);
+  }
+
+  addReceivedMessage(message,userData) {
+    this.sayIt({
+      text: message,
+      user: userData && userData.name ? userData.name : "user",
+      showUser: true,
+      own: false,
+    });
+  }
+
+  sendMessage() {
+    if (!this.state.value) return;
+
+    this.sayIt({
+      text: this.state.value,
+      user: "You",
+      showUser: false,
+      own: true,
+    });
+    
+    socket.emit("SendMessage", this.state.value);
+
+    this.state.value = '';
   }
 
   render() {
@@ -106,7 +144,10 @@ export default class ChatArea extends Component {
             onChange={this.handleChange}
           />
 
-          <button className="chat-send-button" onClick={() => this.sayIt()}>
+          <button
+            className="chat-send-button"
+            onClick={() => this.sendMessage()}
+          >
             Send&nbsp;
             <i className="fas fa-paper-plane" />
           </button>
