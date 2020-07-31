@@ -15,6 +15,11 @@ function App() {
       setResponse(data);
       console.log(data);
     });
+    socket.on("Connected", data => {
+     window.Chatty ={
+      user:data
+     };
+    });
   }, []);
 
   return (

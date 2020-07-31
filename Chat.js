@@ -9,17 +9,32 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+var users = [];
+var maxId = 3;
+
 io.on("connection", (socket) => {
   console.log("a user connected");
-  io.emit("UserConnected", 'A user conected');
-  
+  socket.broadcast.emit("UserConnected", "A user conected");
+
+  var user = {
+    id: maxId,
+    name: `User #${maxId}`,
+  };
+
+  maxId++;
+
+  users.push(user);
+
+  socket.emit("Connected", user);
+
   socket.on("chat message", (msg) => {
     console.log("message: " + msg);
   });
 
-  socket.on("SendMessage", (msg) => {
-    console.log("message: " + msg);
-    socket.broadcast.emit("MessageReceived", msg);
+  socket.on("SendMessage", (data) => {
+    console.log("message: " + data.message);
+
+    socket.broadcast.emit("MessageReceived", data);
   });
 
   socket.on("disconnect", () => {

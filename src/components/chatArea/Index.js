@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import "./ChatArea.css";
 import { socket } from "../../service/socket";
 
@@ -14,21 +14,30 @@ export default class ChatArea extends Component {
       {
         id: 0,
         content: "hello world!!!",
-        user: "Leo",
+        user: {
+          name: "Leo",
+          id: 0,
+        },
         showUser: true,
         time: "12:40",
       },
       {
         id: 1,
         content: "Am i late to sau it?",
-        user: "Leo",
+        user: {
+          name: "Leo",
+          id: 0,
+        },
         showUser: false,
         time: "12:41",
       },
       {
         id: 2,
         content: "say**",
-        user: "Leo",
+        user: {
+          name: "Leo",
+          id: 0,
+        },
         showUser: false,
         time: "12:41",
         showTime: true,
@@ -36,7 +45,10 @@ export default class ChatArea extends Component {
       {
         id: 3,
         content: "This is a message!",
-        user: "Julia",
+        user: {
+          name: "Julia",
+          id: 1,
+        },
         showUser: true,
         time: "12:41",
         showTime: true,
@@ -44,14 +56,16 @@ export default class ChatArea extends Component {
       {
         id: 4,
         content: "This is another message!",
-        user: "Gustavo",
+        user: {
+          name: "Gustavo",
+          id: 2,
+        },
         showUser: true,
         time: "13:27",
         showTime: true,
       },
     ];
 
-    
     this.addReceivedMessage = this.addReceivedMessage.bind(this);
   }
 
@@ -76,27 +90,31 @@ export default class ChatArea extends Component {
         Math,
         this.messages.map((message) => message.id)
       ),
-      date = new Date();
+      date = new Date(),
+      lastMessageUserId = this.messages[this.messages.length - 1].user.id,
+      owner = window.Chatty.user.id == message.user.id;
 
     this.messages.push({
       id: maxId + 1,
       content: message.text,
       user: message.user,
-      showUser: message.showUser,
+      showUser: owner
+        ? false
+        : lastMessageUserId == message.user.id
+        ? false
+        : true,
       time: `${date.getHours()}:${date.getMinutes()}`,
       showTime: true,
-      own: message.own,
+      own: owner,
     });
 
     this.setState(this.messages);
   }
 
-  addReceivedMessage(message,userData) {
+  addReceivedMessage(data) {
     this.sayIt({
-      text: message,
-      user: userData && userData.name ? userData.name : "user",
-      showUser: true,
-      own: false,
+      text: data.message,
+      user: data.user,
     });
   }
 
@@ -105,14 +123,15 @@ export default class ChatArea extends Component {
 
     this.sayIt({
       text: this.state.value,
-      user: "You",
-      showUser: false,
-      own: true,
+      user: window.Chatty.user,
     });
-    
-    socket.emit("SendMessage", this.state.value);
 
-    this.state.value = '';
+    socket.emit("SendMessage", {
+      user: window.Chatty.user,
+      message: this.state.value,
+    });
+
+    this.state.value = "";
   }
 
   render() {
