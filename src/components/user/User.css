@@ -1,0 +1,40 @@
+.user-area {
+  background-color: var(--user-area-background-color);
+  display: grid;
+  grid-template:
+    "pic userInfo";
+  grid-template-columns: minmax(50px,90px) auto;
+  color: white;
+}
+
+.user-picture {
+  grid-area: pic;
+  background-color: white;
+  margin: 10px auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.user-info {
+  grid-area: userInfo;
+
+}
+
+.user-edit {
+  grid-area: edit;
+  background-color: transparent;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 22px;
+  margin-top: 12px;
+}
+
+.user-id {
+  font-size: 14px;
+  margin-top: -3px;
+}

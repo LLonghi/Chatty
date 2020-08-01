@@ -90,10 +90,10 @@ export default class ChatArea extends Component {
 
   userChangedName(user) {
     var userMessages = this.messages.filter(
-      (message) => message.user.id == user.id
+      (message) => message.user.id === user.id
     );
 
-    console.log(`[${ user.oldName}] changed his/her name to [${user.name}]`);
+    console.log(`[${user.oldName}] changed his/her name to [${user.name}]`);
 
     userMessages.forEach((message) => {
       message.user.name = user.name;
@@ -118,7 +118,7 @@ export default class ChatArea extends Component {
       ),
       date = new Date(),
       lastMessageUserId = this.messages[this.messages.length - 1].user.id,
-      owner = window.Chatty.user.id == message.user.id;
+      owner = window.Chatty.user.id === message.user.id;
 
     this.messages.push({
       id: maxId + 1,
@@ -126,10 +126,12 @@ export default class ChatArea extends Component {
       user: message.user,
       showUser: owner
         ? false
-        : lastMessageUserId == message.user.id
+        : lastMessageUserId === message.user.id
         ? false
         : true,
-      time: `${date.getHours()}:${date.getMinutes()}`,
+      time: `${date.getHours()}:${"0".repeat(
+        2 - date.getMinutes().toString().length
+      )}${date.getMinutes()}`,
       showTime: true,
       own: owner,
     });

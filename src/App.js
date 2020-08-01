@@ -6,6 +6,7 @@ import fontAwesome from "./resources/fontawesome-free-5.14.0-web/css/all.css";
 import ChatArea from "./components/chatArea/Index";
 import Chatlist from "./components/chatlist/Index";
 import Header from "./components/header/Index";
+import User from "./components/user/Index";
 
 function App() {
   const [response, setResponse] = useState("");
@@ -15,17 +16,13 @@ function App() {
       setResponse(data);
       console.log(data);
     });
-    socket.on("Connected", data => {
-     window.Chatty ={
-      user:data
-     };
-    });
   }, []);
 
   return (
     <div className="App">
       <Header></Header>
       <Chatlist></Chatlist>
+      <User></User>
       <ChatArea></ChatArea>
     </div>
   );
