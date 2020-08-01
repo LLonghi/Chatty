@@ -27,8 +27,17 @@ io.on("connection", (socket) => {
 
   socket.emit("Connected", user);
 
-  socket.on("chat message", (msg) => {
-    console.log("message: " + msg);
+  socket.on("ChangeUserName", (user) => {
+    var userData = users.find((rec) => rec.id === user.id),
+      oldName = userData.name;
+
+    userData.name = user.name;
+
+    socket.broadcast.emit("UserChangedName", {
+      id: user.id,
+      name: user.name,
+      oldName: oldName,
+    });
   });
 
   socket.on("SendMessage", (data) => {

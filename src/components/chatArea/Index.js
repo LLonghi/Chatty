@@ -67,6 +67,7 @@ export default class ChatArea extends Component {
     ];
 
     this.addReceivedMessage = this.addReceivedMessage.bind(this);
+    this.userChangedName = this.userChangedName.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +76,8 @@ export default class ChatArea extends Component {
     });
 
     socket.on("MessageReceived", this.addReceivedMessage);
+
+    socket.on("UserChangedName", this.userChangedName);
   }
 
   componentWillUnmount() {
@@ -83,6 +86,29 @@ export default class ChatArea extends Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value });
+  }
+
+  userChangedName(user) {
+    var userMessages = this.messages.filter(
+      (message) => message.user.id == user.id
+    );
+
+    console.log(`[${ user.oldName}] changed his/her name to [${user.name}]`);
+
+    userMessages.forEach((message) => {
+      message.user.name = user.name;
+    });
+
+    this.setState(this.messages);
+  }
+
+  changeUserName() {
+    var name = prompt("Please enter your new name");
+    if (name)
+      socket.emit("ChangeUserName", {
+        id: window.Chatty.user.id,
+        name: name,
+      });
   }
 
   sayIt(message) {
