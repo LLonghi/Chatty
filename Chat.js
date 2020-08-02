@@ -25,6 +25,7 @@ io.on("connection", (socket) => {
 
   users.push(user);
 
+  socket.broadcast.emit("NewChatEvent", `${user.name}[${user.id}] just Connected!`);
   socket.emit("Connected", user);
 
   socket.on("ChangeUserName", (user) => {
@@ -38,6 +39,8 @@ io.on("connection", (socket) => {
       name: user.name,
       oldName: oldName,
     });
+
+    socket.broadcast.emit("NewChatEvent", `${oldName}[${user.id}] changed his name to ${user.name}`);
   });
 
   socket.on("SendMessage", (data) => {

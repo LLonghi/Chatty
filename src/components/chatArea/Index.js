@@ -78,6 +78,16 @@ export default class ChatArea extends Component {
     socket.on("MessageReceived", this.addReceivedMessage);
 
     socket.on("UserChangedName", this.userChangedName);
+    socket.on("NewChatEvent", (event) => {
+      this.sayIt({
+        text: event,
+        user: {
+          id: -1,
+          name: "server",
+        },
+        serverMessage:true
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -124,6 +134,7 @@ export default class ChatArea extends Component {
       id: maxId + 1,
       content: message.text,
       user: message.user,
+      serverMessage: message.serverMessage,
       showUser: owner
         ? false
         : lastMessageUserId === message.user.id
@@ -177,6 +188,7 @@ export default class ChatArea extends Component {
               time={item.time}
               showTime={item.showTime}
               own={item.own}
+              serverMessage={item.serverMessage}
             />
           ))}
         </div>

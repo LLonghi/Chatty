@@ -59,3 +59,9 @@
   margin-right: 5px;
   position: initial;
 }
+
+.server-message {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto;
+}
