@@ -176,7 +176,7 @@ export default class ChatArea extends Component {
   render() {
     return (
       <div className="chat-area">
-        <div className="chat-header"> this is the chat title </div>
+        <div className="chat-header">{this.props.chatInfo.name}</div>
 
         <div className="chat-messages">
           {this.messages.map((item) => (
