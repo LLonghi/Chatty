@@ -4,18 +4,59 @@ import "./Chatlist.css";
 import Chat from "../chat/Index";
 
 export default class Chatlist extends Component {
+  constructor(props) {
+    super(props);
+
+    this.chatList = [
+      {
+        id: 0,
+        description: "Group Chat",
+        type:'group',
+        lastMessage: {
+          user: {
+            id: 1,
+            name: "Gustavo",
+          },
+          text: "this is the last message",
+        },
+      },
+      {
+        id: 1,
+        description: "Julia",
+        type:'private',
+        lastMessage: {
+          user: {
+            id: 1,
+            name: "Julia",
+          },
+          text: "See ya tomorrow!",
+        },
+      },
+      {
+        id: 2,
+        description: "Gustavo",
+        type:'private',
+        lastMessage: {
+          user: {
+            id: 2,
+            name: "Gustavo",
+          },
+          text: "Lets play that new game xbox just droped!",
+        },
+      },
+    ];
+  }
+
   render() {
     return (
       <div className="chatlist-area">
-        <Chat
-          title="This is a group chat"
-          lastMessage="This is another message!"
-        />
-        <Chat title="Julia" lastMessage="See ya tomorrow!" />
-        <Chat
-          title="Gustavo"
-          lastMessage="Lets play that new game xbox juste droped!"
-        />
+         {this.chatList.map((item) => (
+            <Chat
+              title={item.description}
+              lastMessage={item.lastMessage}
+              changeSelectedChat={this.props.changeSelectedChat}
+            />
+          ))}        
       </div>
     );
   }

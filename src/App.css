@@ -41,7 +41,7 @@ input {
     "header chat"
     "chatlist chat"
     "user chat";
-  grid-template-columns: minmax(200px, 450px) minmax(350px, auto);
+  grid-template-columns: minmax(200px, 400px) minmax(350px, auto);
   grid-template-rows: 70px auto 70px;
   font-size:  roboto;
 }
