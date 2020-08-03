@@ -11,7 +11,7 @@ export default class Chatlist extends Component {
       {
         id: 0,
         description: "Group Chat",
-        type:'group',
+        type: "group",
         lastMessage: {
           user: {
             id: 1,
@@ -23,7 +23,7 @@ export default class Chatlist extends Component {
       {
         id: 1,
         description: "Julia",
-        type:'private',
+        type: "private",
         lastMessage: {
           user: {
             id: 1,
@@ -35,7 +35,7 @@ export default class Chatlist extends Component {
       {
         id: 2,
         description: "Gustavo",
-        type:'private',
+        type: "private",
         lastMessage: {
           user: {
             id: 2,
@@ -50,13 +50,13 @@ export default class Chatlist extends Component {
   render() {
     return (
       <div className="chatlist-area">
-         {this.chatList.map((item) => (
-            <Chat
-              title={item.description}
-              lastMessage={item.lastMessage}
-              changeSelectedChat={this.props.changeSelectedChat}
-            />
-          ))}        
+        {this.chatList.map((item) => (
+          <Chat
+            key={item.id}
+            chatData={item}
+            changeSelectedChat={this.props.changeSelectedChat}
+          />
+        ))}
       </div>
     );
   }

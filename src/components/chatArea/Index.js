@@ -11,59 +11,17 @@ export default class ChatArea extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.messages = [
-      {
-        id: 0,
-        content: "hello world!!!",
-        user: {
-          name: "Leo",
-          id: 0,
-        },
-        showUser: true,
-        time: "12:40",
-      },
-      {
-        id: 1,
-        content: "Am i late to sau it?",
-        user: {
-          name: "Leo",
-          id: 0,
-        },
-        showUser: false,
-        time: "12:41",
-      },
-      {
-        id: 2,
-        content: "say**",
-        user: {
-          name: "Leo",
-          id: 0,
-        },
-        showUser: false,
-        time: "12:41",
-        showTime: true,
-      },
-      {
-        id: 3,
-        content: "This is a message!",
-        user: {
-          name: "Julia",
-          id: 1,
-        },
-        showUser: true,
-        time: "12:41",
-        showTime: true,
-      },
-      {
-        id: 4,
-        content: "This is another message!",
-        user: {
-          name: "Gustavo",
-          id: 2,
-        },
-        showUser: true,
-        time: "13:27",
-        showTime: true,
-      },
+      // {
+      //   id: 0,
+      //   content: "hello world!!!",
+      //   user: {
+      //     name: "Leo",
+      //     id: 0,
+      //   },
+      //   showUser: true,
+      //   showTime: true,
+      //   time: "12:40",
+      // }
     ];
 
     this.addReceivedMessage = this.addReceivedMessage.bind(this);
@@ -78,6 +36,15 @@ export default class ChatArea extends Component {
     socket.on("MessageReceived", this.addReceivedMessage);
 
     socket.on("UserChangedName", this.userChangedName);
+
+    socket.emit("GetChatMessages", this.props.chatInfo.id);
+    socket.on("ChatMessages", (chatData) => {
+      if (chatData.id === this.props.chatInfo.id) {
+        this.messages = [];
+        chatData.messages.forEach((message) => this.sayIt(message));
+      }
+    });
+
     socket.on("NewChatEvent", (event) => {
       this.sayIt({
         text: event,
@@ -85,9 +52,15 @@ export default class ChatArea extends Component {
           id: -1,
           name: "server",
         },
-        serverMessage:true
+        serverMessage: true,
       });
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.chatInfo.id !== prevProps.chatInfo.id) {
+      socket.emit("GetChatMessages", this.props.chatInfo.id);
+    }
   }
 
   componentWillUnmount() {
@@ -122,12 +95,17 @@ export default class ChatArea extends Component {
   }
 
   sayIt(message) {
-    var maxId = Math.max.apply(
-        Math,
-        this.messages.map((message) => message.id)
-      ),
+    var anyMessages = this.messages.length > 0,
+      maxId = anyMessages
+        ? Math.max.apply(
+            Math,
+            this.messages.map((message) => message.id)
+          )
+        : 0,
       date = new Date(),
-      lastMessageUserId = this.messages[this.messages.length - 1].user.id,
+      lastMessageUserId = anyMessages
+        ? this.messages[this.messages.length - 1].user.id
+        : -1,
       owner = window.Chatty.user.id === message.user.id;
 
     this.messages.push({
@@ -152,8 +130,8 @@ export default class ChatArea extends Component {
 
   addReceivedMessage(data) {
     this.sayIt({
-      text: data.message,
       user: data.user,
+      text: data.message,
     });
   }
 
@@ -168,6 +146,7 @@ export default class ChatArea extends Component {
     socket.emit("SendMessage", {
       user: window.Chatty.user,
       message: this.state.value,
+      chatId: this.props.chatInfo.id,
     });
 
     this.state.value = "";

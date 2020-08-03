@@ -9,25 +9,28 @@ import Header from "./components/header/Index";
 import User from "./components/user/Index";
 
 function App() {
-  useEffect(() => {
-    socket.on("FromAPI", (data) => {
-      setResponse(data);
-      console.log(data);
-    });
-  }, []);
-
-  const [data, setResponse] = useState("");
-
   const [chatData, setChatData] = useState({
     id: 0,
     name: "Nome do Chat",
   });
 
+  const handleChatChange = newChatData =>{
+    socket.emit("ChangeChat",{
+      old:chatData,
+      new:newChatData
+    })
+    setChatData(newChatData)
+  };
 
+  useEffect(() => {
+   
+  }, []);
+
+  
   return (
     <div className="App">
       <Header></Header>
-      <Chatlist changeSelectedChat={setChatData}></Chatlist>
+      <Chatlist changeSelectedChat={handleChatChange}></Chatlist>
       <ChatArea chatInfo={chatData}></ChatArea>
       <User></User>
     </div>

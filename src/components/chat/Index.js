@@ -10,16 +10,16 @@ export default class Chat extends Component {
 
   changeSelectedChat() {
     this.props.changeSelectedChat({
-      id: 0,
-      name: this.props.title
+      id: this.props.chatData.id,
+      name: this.props.chatData.description
     });
   }
 
   render() {
     return (
       <div className="chat" onClick={this.changeSelectedChat}>
-        <div className="chat-title">{this.props.title}</div>
-        <div className="chat-last-message">{this.props.lastMessage.text}</div>
+        <div className="chat-title">{this.props.chatData.description}</div>
+        <div className="chat-last-message">{this.props.chatData.lastMessage.text}</div>
       </div>
     );
   }
