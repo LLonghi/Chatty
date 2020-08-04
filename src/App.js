@@ -14,19 +14,27 @@ function App() {
     name: "Group Chat",
   });
 
-  const handleChatChange = newChatData =>{
-    socket.emit("ChangeChat",{
-      old:chatData,
-      new:newChatData
-    })
-    setChatData(newChatData)
+  const handleChatChange = (newChatData) => {
+    socket.emit("ChangeChat", {
+      old: chatData,
+      new: newChatData,
+    });
+    setChatData(newChatData);
   };
 
-  useEffect(() => {
-   
-  }, []);
+  useEffect(() => {}, []);
 
+  const handleScroll = (e) => {
+    if (e && e.target.classList.contains("on-scrollbar") === false) {
+      e.target.classList.add("on-scrollbar");
+      setTimeout(() => {
+        e.target.classList.remove("on-scrollbar");        
+      }, 2500);
+    }
+  };
   
+  window.addEventListener('scroll', handleScroll, true);
+
   return (
     <div className="App">
       <Header></Header>

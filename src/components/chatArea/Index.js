@@ -9,6 +9,8 @@ export default class ChatArea extends Component {
     super(props);
     this.state = { value: "" };
 
+    this.messagesEndRef = React.createRef();
+
     this.handleChange = this.handleChange.bind(this);
     this.messages = [
       // {
@@ -55,12 +57,15 @@ export default class ChatArea extends Component {
         serverMessage: true,
       });
     });
+
+    this.scrollToBottom();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.chatInfo.id !== prevProps.chatInfo.id) {
       socket.emit("GetChatMessages", this.props.chatInfo.id);
     }
+    this.scrollToBottom();
   }
 
   componentWillUnmount() {
@@ -143,6 +148,10 @@ export default class ChatArea extends Component {
     this.state.value = "";
   }
 
+  scrollToBottom = () => {
+    this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   render() {
     return (
       <div className="chat-area">
@@ -161,6 +170,7 @@ export default class ChatArea extends Component {
               serverMessage={item.serverMessage}
             />
           ))}
+          <div ref={this.messagesEndRef}></div>
         </div>
 
         <div className="chat-send-area" name="chat-send-area">
