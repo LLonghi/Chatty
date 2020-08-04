@@ -11,7 +11,7 @@ import User from "./components/user/Index";
 function App() {
   const [chatData, setChatData] = useState({
     id: 0,
-    name: "Nome do Chat",
+    name: "Group Chat",
   });
 
   const handleChatChange = newChatData =>{

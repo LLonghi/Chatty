@@ -96,12 +96,6 @@ export default class ChatArea extends Component {
 
   sayIt(message) {
     var anyMessages = this.messages.length > 0,
-      maxId = anyMessages
-        ? Math.max.apply(
-            Math,
-            this.messages.map((message) => message.id)
-          )
-        : 0,
       date = new Date(),
       lastMessageUserId = anyMessages
         ? this.messages[this.messages.length - 1].user.id
@@ -109,7 +103,7 @@ export default class ChatArea extends Component {
       owner = window.Chatty.user.id === message.user.id;
 
     this.messages.push({
-      id: maxId + 1,
+      id: message.id,
       content: message.text,
       user: message.user,
       serverMessage: message.serverMessage,
@@ -129,10 +123,7 @@ export default class ChatArea extends Component {
   }
 
   addReceivedMessage(data) {
-    this.sayIt({
-      user: data.user,
-      text: data.message,
-    });
+    this.sayIt(data);
   }
 
   sendMessage() {
@@ -145,7 +136,7 @@ export default class ChatArea extends Component {
 
     socket.emit("SendMessage", {
       user: window.Chatty.user,
-      message: this.state.value,
+      text: this.state.value,
       chatId: this.props.chatInfo.id,
     });
 

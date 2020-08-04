@@ -28,53 +28,59 @@ var chatList = [
   {
     id: 0,
     name: "Group Chat",
-    messages: [
-      {
-        id: 0,
-        userId: 1,
-        text: "Hello World!!!",
-      },
-      {
-        id: 1,
-        userId: 1,
-        text: "Am i late to sau it?",
-      },
-      {
-        id: 2,
-        userId: 1,
-        text: "Say***",
-      },
-      {
-        id: 3,
-        userId: 2,
-        text: "Hey Leo!",
-      },
-      {
-        id: 4,
-        userId: 3,
-        text: "Whats up Bro?",
-      },
-    ],
   },
   {
     id: 1,
     name: "Julia",
-    messages: [
-      {
-        userId: 2,
-        text: "See ya tomorrow!",
-      },
-    ],
   },
   {
     id: 2,
     name: "Gustavo",
-    messages: [
-      {
-        userId: 3,
-        text: "Lets play that new game xbox just droped!",
-      },
-    ],
+  },
+];
+
+var messages = [
+  {
+    id: 0,
+    userId: 1,
+    chatId: 0,
+    text: "Hello World!!!",
+  },
+  {
+    id: 1,
+    userId: 1,
+    chatId: 0,
+    text: "Am i late to sau it?",
+  },
+  {
+    id: 2,
+    userId: 1,
+    chatId: 0,
+    text: "Say***",
+  },
+  {
+    id: 3,
+    userId: 2,
+    chatId: 0,
+    text: "Hey Leo!",
+  },
+  {
+    id: 4,
+    userId: 3,
+    chatId: 0,
+    text: "Whats up Bro?",
+  },
+  {
+    id: 5,
+    userId: 2,
+    chatId: 1,
+    text: "See ya tomorrow!",
+  },
+  {
+    id: 6,
+    userId: 3,
+    chatId: 2,
+    text: "Lets play that new game xbox just droped!",
   },
 ];
 
@@ -118,20 +124,29 @@ io.on("connection", (socket) => {
   });
 
   socket.on("SendMessage", (data) => {
-    console.log(
-      `user Sent message to chat [${data.chatId}](${
-        chatList.find((chat) => chat.id === data.chatId).name
-      }): ${data.message}`
-    );
-    socket.to(data.chatId).broadcast.emit("MessageReceived", data);
+    var id = messages.length + 1;
+
+    messages.push({
+      id: id,
+      userId: data.user.id,
+      chatId: data.chatId,
+      text: data.text,
+    });
+
+    socket.to(data.chatId).broadcast.emit("MessageReceived", {
+      id: id,
+      user: data.user,
+      chatId: data.chatId,
+      text: data.text,
+    });
   });
 
   socket.on("GetChatMessages", (chatId) => {
     socket.emit("ChatMessages", {
       id: chatId,
-      messages: chatList
-        .find((chat) => chat.id === chatId)
-        .messages.map(
+      messages: messages
+        .filter((message) => message.chatId === chatId)
+        .map(
           (message) =>
             new Object({
               id: message.id,
